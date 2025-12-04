@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
+import CardPost from './components/CardPost';
 
 
 const initialFormPost = {
@@ -14,6 +15,7 @@ const initialFormPost = {
 function App() {
 
   const [formPost, setFormPost] = useState(initialFormPost);
+  const [newPost, setNewPost] = useState([]);
 
 
 
@@ -26,12 +28,11 @@ function App() {
     setFormPost(newObject)
   }
 
-  function updateName(event) {
-    const newObject = {
-      ...formPost, name: event.targe.value,
-    };
-    setFormPost(newObject)
-  }
+  function aggiungiPost(event) {
+  event.preventDefault();
+  setNewPost((current) => [...current, formPost]);
+  setFormPost(initialFormPost);
+}
 
   return (
     <>
@@ -39,9 +40,11 @@ function App() {
       <header className='bg-dark d-flex text-white py-3 shadow-sm align-items-center justify-content-center'>
         <h1 className='m-0  gap-2'>☁️🎮 Blog di riflessioni videoludiche 🌙</h1></header>
       <div className="container mt-4">
-        <form className="row g-3">
-          {/* form */}
+
           <h2 className='fw-bold mt-5 pb-2 border-bottom border-secondary d-inline-block'>Crea un nuovo post:</h2>
+
+          {/* form */}
+          <form className="row g-3" onSubmit={aggiungiPost}>
           {/* autore */}
           <div className="col-6">
             <label htmlFor="autore">Autore</label>
@@ -62,17 +65,7 @@ function App() {
         </form>
         {/* post */}
         <div className="col-12">
-          <div className="card my-4 border-secondary">
-            <div className="card-header bg-secondary text-white">
-              <h3 className="mb-0">{formPost.titolo}</h3>
-              <small className="opacity-75">{formPost.autore}</small>
-            </div>
-            <div className="card-body">
-              <p className="card-text">
-                {formPost.testo}
-              </p>
-            </div>
-          </div>
+          <CardPost newPost={newPost}/>   
           {/* fine post */}
         </div>
       </div>
