@@ -7,21 +7,31 @@ const initialFormPost = {
   autore: "",
   titolo: "",
   testo: "",
-  checkbox: true,
+  pubblica: true,
 };
 
 
 function App() {
 
-const [formPost, setFormPost] = useState(initialFormPost);
+  const [formPost, setFormPost] = useState(initialFormPost);
 
 
-function updateName(event) {
-const newObject = {
-...formPost, name: event.targe.value,
-};
-setFormPost(newObject)
-}
+
+  function updateFormData(event) {
+    const key = event.target.id
+    const newObject = {
+      ...formPost,
+      [key]: event.target.type === "checkbox" ? event.target.checked : event.target.value
+    }
+    setFormPost(newObject)
+  }
+
+  function updateName(event) {
+    const newObject = {
+      ...formPost, name: event.targe.value,
+    };
+    setFormPost(newObject)
+  }
 
   return (
     <>
@@ -33,34 +43,33 @@ setFormPost(newObject)
           {/* form */}
           <h2 className='fw-bold mt-5 pb-2 border-bottom border-secondary d-inline-block'>Crea un nuovo post:</h2>
           {/* autore */}
-              <div className="col-6">
-              <label htmlFor="autore">Autore</label>
-              <input id="autore" type="text" className='form-control' value={formPost.autore} onChange={updateName}/></div>
-            {/* titolo post */}
-            <div className="col-6"><label htmlFor="titolo">Titolo post</label>
-              <input id="titolo" type="text" className='form-control' value={formPost.titolo} onChange={updateName} /></div>
+          <div className="col-6">
+            <label htmlFor="autore">Autore</label>
+            <input id="autore" type="text" className='form-control' value={formPost.autore} onChange={updateFormData} /></div>
+          {/* titolo post */}
+          <div className="col-6"><label htmlFor="titolo">Titolo post</label>
+            <input id="titolo" type="text" className='form-control' value={formPost.titolo} onChange={updateFormData} /></div>
           {/* area post */}
           <div className="col-12">
             <label htmlFor="testo">Contenuto del post</label>
-            <textarea id="testo" className="form-control" rows="4" value={formPost.testo} onChange={updateName}></textarea></div>
+            <textarea id="testo" className="form-control" rows="4" value={formPost.testo} onChange={updateFormData}></textarea></div>
           {/* checkbox */}
           <div className="col-6">
-            <input type="checkbox" id="pubblica" />
+            <input type="checkbox" name="pubblica" id="pubblica" checked={formPost.pubblica} onChange={updateFormData}/>
             <label htmlFor="pubblica" className='px-2'>Pubblica subito</label></div>
           {/* bottone */}
-          <div className="col-6 text-end"><button className="btn btn-secondary fw-bold">Invia</button></div>
-          </form>
-          {/* post */}
-          <div className="col-12">
-              <div className="card my-4 border-secondary">
+          <div className="col-6 text-end"><button type="submit" className="btn btn-secondary fw-bold">Invia</button></div>
+        </form>
+        {/* post */}
+        <div className="col-12">
+          <div className="card my-4 border-secondary">
             <div className="card-header bg-secondary text-white">
-              <h3 className="mb-0">Titolo del post 🎮</h3>
-              <small className="opacity-75">Autore</small>
+              <h3 className="mb-0">{formPost.titolo}</h3>
+              <small className="opacity-75">{formPost.autore}</small>
             </div>
             <div className="card-body">
               <p className="card-text">
-                Testo del post — riflessione, opinione o micro-recensione.
-                Può contenere 1-2 righe oppure anche di più.
+                {formPost.testo}
               </p>
             </div>
           </div>
